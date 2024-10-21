@@ -1,18 +1,40 @@
-// TODO: Implement the password generation logic based on user input
+const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const lowercase = "abcdefghijklmnopqrstuvwxyz";
+const numbers = "0123456789";
+const special = "!@#$%^&*()_+{}[]|:;<>,.?/";
 
-const generatePassword = (length, options) => {
-    // Character sets for password generation
-    const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const lowercase = "abcdefghijklmnopqrstuvwxyz";
-    const numbers = "0123456789";
-    const specialChars = "!@#$%^&*()";
+document.getElementById('generate').addEventListener('click', function () {
+  const length = document.getElementById('length').value;
+  const includeUppercase = document.getElementById('uppercase').checked;
+  const includeLowercase = document.getElementById('lowercase').checked;
+  const includeNumbers = document.getElementById('numbers').checked;
+  const includeSpecial = document.getElementById('special').checked;
 
-    // TODO: Create a variable for the character set based on selected options
+  let characterPool = '';
 
-    // TODO: Generate the password based on the selected criteria
-    return password;
-};
+  if (includeUppercase) characterPool += uppercase;
+  if (includeLowercase) characterPool += lowercase;
+  if (includeNumbers) characterPool += numbers;
+  if (includeSpecial) characterPool += special;
 
-// TODO: Add event listener to the button to call generatePassword and display the output
+  if (characterPool === '') {
+    alert('Please select at least one character set!');
+    return;
+  }
 
-// BONUS: Implement the copy to clipboard functionality
+  let password = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characterPool.length);
+    password += characterPool[randomIndex];
+  }
+
+  document.getElementById('password').value = password;
+});
+
+document.getElementById('copy').addEventListener('click', function () {
+  const passwordField = document.getElementById('password');
+  passwordField.select();
+  passwordField.setSelectionRange(0, 99999); // For mobile devices
+  document.execCommand('copy');
+  alert('Password copied to clipboard!');
+});
